@@ -1,6 +1,8 @@
 import scrapy
 import csv
 
+from paginasAmarilla.items import PaginasamarillaItem
+
 
 class ContratistaSpiders(scrapy.Spider) :
     name="contratista"
@@ -27,21 +29,22 @@ class ContratistaSpiders(scrapy.Spider) :
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
+        output_data=PaginasamarillaItem()
         try:
-            nombre=response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[2]/div[1]/a[1]/text()').extract_first()
+            output_data['name']=response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[2]/div[1]/a[1]/text()').extract_first()
             direccion=response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[2]/div[1]/p[1]/text()').extract_first()
-            phone=response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[2]/div[1]/p[2]/text()').extract_first()
-            #print(nombre)
-            ubicacion=direccion.split(',')
-            direccion=ubicacion[0]
-            estado=ubicacion[2].split(' ')
-            yield {
-                'name':nombre ,
-                'address': direccion,
-                'city': ubicacion[1],
-                'state': estado[1],
-                'ZIP':estado[2],
-                'phone': phone,
-                }
+            output_data['phone']=response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[2]/div[1]/p[2]/text()').extract_first()
+            try:
+                ubicacion=direccion.split(',')
+                output_data['address']=ubicacion[0]
+                estado=ubicacion[2].split(' ')
+                output_data['city']= ubicacion[1]
+                output_data['state'] =estado[1]
+                output_data['ZIP'] =estado[2]
+                output_data['phone']=response.xpath('//*[@id="content-wrapper"]/div[2]/div[1]/div[2]/div[1]/p[2]/text()').extract_first()
+                yield output_data
+            except:
+                pass
+
         except:
             pass

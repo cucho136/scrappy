@@ -1,0 +1,13 @@
+Para correr esta spider debe abrir la terminal y dirigirse a la carpeta spiders
+
+  cd paginasAmarilla/paginasAmarilla/spiders/
+
+aca podra encontrar el codigo fuente y el csv generado al correr el spider,
+para correrlo primero remueva el archivo contratista.csv, y despues corra
+el sguiente comando:
+
+scrapy runspider contratista_spiders.py -o contratista.csv
+
+
+cuando el archivo termine de correr genera la salida solicitada con los campos:
+ZIP, address, city, name, phone, state

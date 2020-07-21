@@ -9,4 +9,9 @@ import scrapy
 class PaginasamarillaItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    name = scrapy.Field()
+    address= scrapy.Field()
+    city = scrapy.Field()
+    state = scrapy.Field()
+    ZIP = scrapy.Field()
+    phone = scrapy.Field()
